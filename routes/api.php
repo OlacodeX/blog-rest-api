@@ -12,6 +12,6 @@ Route::post('/verify', [AuthenticationController::class, 'verify'])->name('verif
 Route::post('/resetpassword', [AuthenticationController::class, 'resetPassword'])->name('resetPassword');
 Route::post('/resendVerificationMail', [AuthenticationController::class, 'resendVerificationEmail'])->name('resendVerificationEmail');
 
-Route::middleware(['auth:sanctum','role:Admin'])->group(function(){
-    Route::apiResource('/posts', PostController::class);
-});
+Route::apiResource('/posts', PostController::class);
+// Route::middleware(['auth:sanctum','role:Admin'])->except('index')->group(function(){
+// });

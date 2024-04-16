@@ -17,13 +17,8 @@ class RoleMiddleware
      */
     public function handle(Request $request, Closure $next, string $role)
     {
-        
-        if (!Auth::check()) {
-            abort(401);
-        }
-
-        $user_type = explode("\\",Auth::user()->profile_type)[2];
-        if ($user_type !== $role) {
+       
+        if (Auth::user()->profile_type !== $role) {
             abort(403, 'You are not allowed to carry out this action');
         }
         return $next($request);

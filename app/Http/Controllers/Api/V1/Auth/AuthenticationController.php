@@ -54,7 +54,7 @@ class AuthenticationController extends Controller
             'token' => $token->plainTextToken,
             'name' => $user->name,
             'email' => $user->email,
-            'user_type' => explode('\\', $user->profile_type)[2],
+            'user_type' => $user->profile_type,
         ], Response::HTTP_CREATED);
     }
 
@@ -79,7 +79,6 @@ class AuthenticationController extends Controller
 
         return response()->json([
             "message" => "Email Sent",
-            "temporal_data" => $data,
         ], Response::HTTP_OK);
     }
 
@@ -120,7 +119,6 @@ class AuthenticationController extends Controller
             $data = $user->sendVerificationEmail();
             return response()->json([
                 "message" => "Verification Email Resent.",
-                "temporal_data" => $data,
             ], Response::HTTP_OK);
         }
 
