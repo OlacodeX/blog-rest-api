@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Api\V1\Auth\AuthenticationController;
 use App\Http\Controllers\Api\V1\PostController;
+use App\Http\Controllers\CommentController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -12,6 +13,7 @@ Route::post('/verify', [AuthenticationController::class, 'verify'])->name('verif
 Route::post('/resetpassword', [AuthenticationController::class, 'resetPassword'])->name('resetPassword');
 Route::post('/resendVerificationMail', [AuthenticationController::class, 'resendVerificationEmail'])->name('resendVerificationEmail');
 
-Route::apiResource('/posts', PostController::class);
-// Route::middleware(['auth:sanctum','role:Admin'])->except('index')->group(function(){
-// });
+Route::apiResource('posts', PostController::class)->whereNumber(['post']);
+Route::middleware(['auth:sanctum'])->group(function () {
+    Route::apiResource('posts.comments', CommentController::class)->whereNumber(['post', 'comment']);
+});
