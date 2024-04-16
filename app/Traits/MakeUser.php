@@ -9,21 +9,25 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
  */
 trait MakeUser
 {
-
-    public function makeUser (string $password)
+    public function user()
     {
-        $user = new User();
+        return $this->morphOne(User::class, 'profile');
+    }
+
+    public function makeUser (string $password = '')
+    {
+        $user = $this->user ?? new User();
         $user['name'] = $this->name;
         $user['email'] = $this->email;
-        $user['password'] = $password;
-        $user['profile_id'] = $this->id;
-        $user['profile_type'] = $this::class;
+        !$this->user ? $user['password'] = $password : null;
+        !$this->user ? $user['profile_id'] = $this->id : null;
+        !$this->user ? $user['profile_type'] = $this::class : null;
 
         $user->save();
 
-        if(method_exists($user, 'sendVerificationEmail') && empty($user->email_verified_at))
+        if(method_exists($user, 'sendVerificationEmail') && empty($user->email_verified_at) && !$this->user)
         {
-            return $user->sendVerificationEmail();
+            $user->sendVerificationEmail();
         }
 
         return $user;

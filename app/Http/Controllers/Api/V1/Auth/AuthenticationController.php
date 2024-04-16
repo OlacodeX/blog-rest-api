@@ -26,7 +26,7 @@ class AuthenticationController extends Controller
         return DB::transaction(function () use($validatedInput) {
             $profile = $validatedInput['user_type'] == 'Admin' ? Admin::create($validatedInput) : Visitor::create($validatedInput);
             
-            return $user = $profile->makeUser($validatedInput['password']);
+            $user = $profile->makeUser($validatedInput['password']);
 
             return new UserResource($user, Response::HTTP_CREATED);
         });
