@@ -15,6 +15,4 @@ Route::post('/resendVerificationMail', [AuthenticationController::class, 'resend
 
 Route::apiResource('posts', PostController::class)->whereNumber(['post']);
 Route::apiResource('users', UserController::class)->only(['index', 'update', 'destroy', 'show'])->whereNumber(['user']);
-Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('posts.comments', CommentController::class)->whereNumber(['post', 'comment']);
-});
+Route::apiResource('posts.comments', CommentController::class)->whereNumber(['post', 'comment']);
