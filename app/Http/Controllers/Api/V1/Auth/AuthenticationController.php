@@ -111,7 +111,7 @@ class AuthenticationController extends Controller
             $user = User::where('email', $validatedInput['email'])->firstorfail();
 
         } catch (ModelNotFoundException $exception) {
-            return response()->json("Email not found", Response::HTTP_NOT_FOUND);
+            return response()->json(["message" => "Email not found" ], Response::HTTP_NOT_FOUND);
         }
         
         if(method_exists($user, 'sendVerificationEmail') && empty($user->email_verified_at))
@@ -122,7 +122,7 @@ class AuthenticationController extends Controller
             ], Response::HTTP_OK);
         }
 
-        return response()->json("Email Already Verified.", Response::HTTP_OK);
+        return response()->json(["message" => "Email Already Verified."], Response::HTTP_OK);
 
     }
 }
