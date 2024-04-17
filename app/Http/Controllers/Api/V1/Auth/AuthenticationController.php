@@ -28,7 +28,7 @@ class AuthenticationController extends Controller
             
             $user = $profile->makeUser($validatedInput['password']);
 
-            return new UserResource($user, Response::HTTP_CREATED);
+            return response()->json('Registration successful. Kindly check your inbox for instructions on how to verify your account. Thanks.', Response::HTTP_CREATED);
         });
 
     }
