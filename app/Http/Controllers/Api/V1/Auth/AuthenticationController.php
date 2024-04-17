@@ -78,7 +78,7 @@ class AuthenticationController extends Controller
         $data = $user->sendPasswordResetEmail();
 
         return response()->json([
-            "message" => "Email Sent",
+            "message" => is_string($data) ? $data : "Email Sent",
         ], Response::HTTP_OK);
     }
 
@@ -118,7 +118,7 @@ class AuthenticationController extends Controller
         {
             $data = $user->sendVerificationEmail();
             return response()->json([
-                "message" => "Verification Email Resent.",
+                "message" => is_string($data) ? $data : "Verification Email Resent.",
             ], Response::HTTP_OK);
         }
 
