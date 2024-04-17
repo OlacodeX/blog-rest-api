@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Mail\PasswordReset;
 use App\Mail\UserVerification;
 use App\Models\Verify;
+use Exception;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
@@ -27,7 +28,11 @@ trait ShouldVerify
     {
         $verifyUser = $this->generateVerifier();
         $url = config('custom.frontend_url').'/verify_email'.'/'.$verifyUser->token;
-        Mail::to($verifyUser->email)->send(new UserVerification($url));
+        try {
+            Mail::to($verifyUser->email)->send(new UserVerification($url));
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
         
         return $verifyUser;
     }
@@ -37,7 +42,11 @@ trait ShouldVerify
     {
         $verifyUser = $this->generateVerifier();
         $url = config('custom.frontend_url').'/reset_password'.'/'.$verifyUser->token;
-        Mail::to($verifyUser->email)->send(new PasswordReset($url));
+        try {
+            Mail::to($verifyUser->email)->send(new PasswordReset($url));
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
         return $verifyUser;
     }
 
