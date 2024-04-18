@@ -80,6 +80,16 @@ class PostController extends Controller implements HasMiddleware
             return response()->json(['message' => 'Post not found'], Response::HTTP_NOT_FOUND);
         }
         $validatedInput = $request->validated();
+        if ($request->has('media')) {
+            $firebase_storage_path = config('services.firebase.environment').'/'.'blog/'; 
+            $originName = $validatedInput['media']->getClientOriginalName();
+            $fileName  = pathinfo($originName, PATHINFO_FILENAME);
+            $extension = $validatedInput['media']->getClientOriginalExtension(); 
+            $fileName = $fileName.'.'.$extension; 
+            $localPath = 'storage/images/blog';
+            $downloadUrl = Auth::user()->store($validatedInput['media'], $firebase_storage_path, $localPath, $fileName); 
+            $validatedInput['media'] = $downloadUrl;
+        }
         $old_post->update($validatedInput);
         $old_post->refresh();
        return new PostResource($old_post, Response::HTTP_OK);
