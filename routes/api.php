@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\V1\UserController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/register', [AuthenticationController::class, 'register'])->name('regster');
+Route::post('/admin_register', [AuthenticationController::class, 'adminRegister'])->name('adminRegister')->middleware(['auth:sanctum','role:Admin']);
 Route::post('/login', [AuthenticationController::class, 'login'])->name('login');
 Route::post('/logout', [AuthenticationController::class, 'logout'])->name('logout');
 Route::post('/verify', [AuthenticationController::class, 'verify'])->name('verify');

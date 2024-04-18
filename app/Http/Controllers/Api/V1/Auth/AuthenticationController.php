@@ -25,7 +25,20 @@ class AuthenticationController extends Controller
     {
         $validatedInput = $request->validated();
         return DB::transaction(function () use($validatedInput) {
-            $profile = $validatedInput['user_type'] == 'Admin' ? Admin::create($validatedInput) : Visitor::create($validatedInput);
+            $profile = Visitor::create($validatedInput);
+            
+            $user = $profile->makeUser($validatedInput['password']);
+
+            return response()->json(['message' => 'Registration successful. Kindly check your inbox for instructions on how to verify your account. Thanks.'], Response::HTTP_CREATED);
+        });
+
+    }
+
+    public function adminRegister(RegisterRequest $request)
+    {
+        $validatedInput = $request->validated();
+        return DB::transaction(function () use($validatedInput) {
+            $profile = Admin::create($validatedInput);
             
             $user = $profile->makeUser($validatedInput['password']);
 
