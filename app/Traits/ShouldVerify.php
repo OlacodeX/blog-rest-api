@@ -40,9 +40,10 @@ trait ShouldVerify
     public function sendPasswordResetEmail(string $source)
     {
         $verifyUser = $this->generateVerifier();
-        $url = $source == 'web' ? config('custom.frontend_url').'/reset_password'.'/'.$verifyUser->token : config('custom.mobile_url').'/reset_password'.'/'.$verifyUser->token;
+        $url = $source == 'web' ? config('custom.frontend_url').'/reset_password'.'/'.$verifyUser->token : null;
+        $code = $source == 'web' ? null : $verifyUser->token;
         try {
-            Mail::to($verifyUser->email)->send(new PasswordReset($url));
+            Mail::to($verifyUser->email)->send(new PasswordReset($url, $code));
         } catch (Exception $e) {
             return $e->getMessage();
         }

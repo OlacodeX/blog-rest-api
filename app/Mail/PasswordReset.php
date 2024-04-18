@@ -16,7 +16,7 @@ class PasswordReset extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(protected $url)
+    public function __construct(protected ?string $url, protected ?string $code)
     {
         //
     }
@@ -39,7 +39,8 @@ class PasswordReset extends Mailable
         return new Content(
             view: 'email-templates.password_reset',
             with: [
-                'url' => $this->url
+                'url' => $this->url,
+                'code' => $this->code
             ],
         );
     }
