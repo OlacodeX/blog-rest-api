@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('posts', function (Blueprint $table) {
-            $table->longText('media')->after('body');
+            $table->longText('media')->after('body')->nullbale()->default('');
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
     {
         Schema::table('posts', function (Blueprint $table) {
             //
-
+            
         });
     }
 };
