@@ -43,6 +43,14 @@ class PostController extends Controller implements HasMiddleware
     {
        $validatedInput = $request->validated();
        $validatedInput['user_id'] = Auth::user()->id;
+       $firebase_storage_path = config('services.firebase.environment').'/'.'blog/'; 
+       $originName = $validatedInput['media']->getClientOriginalName();
+       $fileName  = pathinfo($originName, PATHINFO_FILENAME);
+       $extension = $validatedInput['media']->getClientOriginalExtension(); 
+       $fileName = $fileName.'.'.$extension; 
+       $localPath = 'storage/images/blog';
+       $downloadUrl = Auth::user()->store($validatedInput['media'], $firebase_storage_path, $localPath, $fileName); 
+       $validatedInput['media'] = $downloadUrl;
        $post = Post::create($validatedInput);
 
        return new PostResource($post, Response::HTTP_CREATED);
