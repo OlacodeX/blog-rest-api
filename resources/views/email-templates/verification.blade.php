@@ -4,16 +4,14 @@
 
     <div style='background-color: #ffffff; height:100%; width:100%;padding:10px;color:black;text-align:left;'>
         <h4 style='color:black;'>Hello !</h4>
-        <p style='color:black;'>Please click the button below to verify your email address.</p>
+        <p style='color:black;'>Please use the code below to verify your email address.</p>
 
-        <p style='color:black;'><a href='{{ $url }}' style='background-color: #263544;padding:10px;text-decoration:none;color:white;border:1 px solid  #263544;border-radius:10px;justifly-content:center; '>Verify Email Address.</a></p>
+        <p style='background-color: #263544;padding:10px;text-decoration:none;color:white;border:1 px solid  #263544;border-radius:10px;justifly-content:center; '>{{ $code }}</p>
 
         <p style='color:black;'>If you did not create an account, no further action is required.</p>
         <br>
         Regards,
         <p style='color:black;'>{{ ucfirst(config('custom.app_name')) }}</p>
-
-        <p style='color:black;'> If you're having trouble clicking the 'Verify Email Address' button, copy and paste the URL below into your web browser: </p><a href="{{ $url }}">{{ $url }}</a>
     </div>
     <p style='text-align: center;color:black'>
         Copyright &copy; {{ date("Y") }} {{ ucfirst(config('custom.app_name')) }} <a href='{{ config('custom.app_url') }}' target='_blank' rel='noopener'></a>

@@ -16,7 +16,7 @@ trait ShouldVerify
     {
         $verifyUser = Verify::create([
             'user_id' => $this->id,
-            'token' => Str::random(60),
+            'token' => Str::random(6),
             'email' => $this->email,
             'expires_at' => now()->addMinutes(180)
         ]);
@@ -27,9 +27,8 @@ trait ShouldVerify
     public function sendVerificationEmail()
     {
         $verifyUser = $this->generateVerifier();
-        $url = config('custom.frontend_url').'/verify_email'.'/'.$verifyUser->token;
         try {
-            Mail::to($verifyUser->email)->send(new UserVerification($url));
+            Mail::to($verifyUser->email)->send(new UserVerification($verifyUser->token));
         } catch (Exception $e) {
             return $e->getMessage();
         }
@@ -38,10 +37,10 @@ trait ShouldVerify
     }
 
     
-    public function sendPasswordResetEmail()
+    public function sendPasswordResetEmail(string $source)
     {
         $verifyUser = $this->generateVerifier();
-        $url = config('custom.frontend_url').'/reset_password'.'/'.$verifyUser->token;
+        $url = $source == 'web' ? config('custom.frontend_url').'/reset_password'.'/'.$verifyUser->token : config('custom.mobile_url').'/reset_password'.'/'.$verifyUser->token;
         try {
             Mail::to($verifyUser->email)->send(new PasswordReset($url));
         } catch (Exception $e) {

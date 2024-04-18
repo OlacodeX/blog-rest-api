@@ -56,7 +56,7 @@ class PostController extends Controller implements HasMiddleware
         try {
             $post = Post::findOrFail($post);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Post not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => ['message' => 'Post not found']], Response::HTTP_NOT_FOUND);
         }
         return new PostResource($post, Response::HTTP_OK);
     }
@@ -69,7 +69,7 @@ class PostController extends Controller implements HasMiddleware
         try {
             $old_post = Post::findOrFail($post);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Post not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Post not found'], Response::HTTP_NOT_FOUND);
         }
         $validatedInput = $request->validated();
         $old_post->update($validatedInput);
@@ -85,11 +85,11 @@ class PostController extends Controller implements HasMiddleware
         try {
             $post = Post::findOrFail($post);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Post not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Post not found'], Response::HTTP_NOT_FOUND);
         }
 
         $post->delete();
         
-        return response()->json('Post deleted', Response::HTTP_OK);
+        return response()->json(['message' => 'Post deleted'], Response::HTTP_OK);
     }
 }

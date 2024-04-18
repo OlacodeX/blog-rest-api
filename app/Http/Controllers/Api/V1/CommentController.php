@@ -34,7 +34,7 @@ class CommentController extends Controller implements HasMiddleware
         try {
             $post = Post::findOrFail($post);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Post not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Post not found'], Response::HTTP_NOT_FOUND);
         }
         return CommentResource::collection($post->comments);
     }
@@ -47,7 +47,7 @@ class CommentController extends Controller implements HasMiddleware
         try {
             $post = Post::findOrFail($post);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Post not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Post not found'], Response::HTTP_NOT_FOUND);
         }
 
         $validatedInput = $request->validated();
@@ -66,7 +66,7 @@ class CommentController extends Controller implements HasMiddleware
         try {
             $comment = Comment::findOrFail($comment);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Comment not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Comment not found'], Response::HTTP_NOT_FOUND);
         }
 
         return new CommentResource($comment);
@@ -80,7 +80,7 @@ class CommentController extends Controller implements HasMiddleware
         try {
             $comment = Comment::findOrFail($comment);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Comment not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Comment not found'], Response::HTTP_NOT_FOUND);
         }
 
         $validatedInput = $request->validated();
@@ -98,11 +98,11 @@ class CommentController extends Controller implements HasMiddleware
        try {
             $comment = Comment::findOrFail($comment);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Comment not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Comment not found'], Response::HTTP_NOT_FOUND);
         }
 
         $comment->delete();
 
-        return response()->json('Comment deleted', Response::HTTP_OK);
+        return response()->json(['message' => 'Comment deleted'], Response::HTTP_OK);
     }
 }

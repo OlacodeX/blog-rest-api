@@ -18,6 +18,8 @@ it('can verify account', function () {
     ]);
 
     $response->assertStatus(200);
+    expect($response->json()['message'])
+        ->toBe("Email Address Verified.");
 });
 
 

@@ -11,5 +11,7 @@ it('can logout', function () {
     ]);
 
     $response->assertStatus(200);
-    expect($response->json())->toEqual([]);
+   
+    expect($response->json()['message'])
+        ->toBe("Logout successful");
 });

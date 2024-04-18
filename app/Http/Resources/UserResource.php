@@ -19,6 +19,8 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'user_type' => $this->profile_type,
+            'status' => $this->email_verified_at ? 'Verified' : 'Unverified',
+            'joined_on' => $this->created_at->format('Y-m-d'),
         ];
     }
 }

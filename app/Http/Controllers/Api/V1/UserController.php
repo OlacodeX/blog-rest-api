@@ -40,7 +40,7 @@ class UserController extends Controller implements HasMiddleware
         try {
             $user = User::findOrFail($user);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Profile not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Profile not found'], Response::HTTP_NOT_FOUND);
         }
 
         return new UserResource($user);
@@ -54,7 +54,7 @@ class UserController extends Controller implements HasMiddleware
         try {
             $user = User::findOrFail($user);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Profile not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Profile not found'], Response::HTTP_NOT_FOUND);
         }
         
         $validatedInput = $request->validate([
@@ -80,16 +80,15 @@ class UserController extends Controller implements HasMiddleware
         try {
             $user = User::findOrFail($user);
         } catch (ModelNotFoundException $e) {
-            return response()->json('Profile not found', Response::HTTP_NOT_FOUND);
+            return response()->json(['message' => 'Profile not found'], Response::HTTP_NOT_FOUND);
         }
-        
-        DB::transaction(function () use($user) {
 
+        DB::transaction(function () use($user) {
             $user->profile()->delete();
             $user->delete();
             
         });
 
-        return response()->json('Profile deleted', Response::HTTP_OK);
+        return response()->json(['message' => 'Profile deleted'], Response::HTTP_OK);
     }
 }

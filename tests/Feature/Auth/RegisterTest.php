@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Support\Arr;
-
 it('can register', function () {
     $email = fake()->unique()->safeEmail();
 
@@ -13,7 +11,7 @@ it('can register', function () {
         'password_confirmation' => 'Password690@',
     ]);
     $response->assertStatus(201);
-    expect($response->json())
+    expect($response->json()['message'])
         ->toBe('Registration successful. Kindly check your inbox for instructions on how to verify your account. Thanks.');
 });
 

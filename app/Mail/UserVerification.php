@@ -16,7 +16,7 @@ class UserVerification extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(protected $verification_url)
+    public function __construct(protected $verification_code)
     {
         //
     }
@@ -39,7 +39,7 @@ class UserVerification extends Mailable
         return new Content(
             view: 'email-templates.verification',
             with: [
-                'url' => $this->verification_url
+                'code' => $this->verification_code
             ],
         );
     }
