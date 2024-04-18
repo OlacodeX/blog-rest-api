@@ -23,7 +23,7 @@ class VerificationRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'email' => ['required','string', 'email', 'exists:users,email'],
+            'email' => ['sometimes','string', 'email', 'exists:users,email'],
             'token' => ['required'],
             'password' => ['sometimes', 'string', Password::min(8)->mixedCase()->numbers()->symbols(), 'confirmed'],
         ];

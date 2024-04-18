@@ -25,6 +25,7 @@ class UpdatePostRequest extends FormRequest
             'title' => ['sometimes', 'string', 'unique:posts,title,'.$this->route('post')],
             'body' => ['sometimes', 'string'],
             'media' => ['sometimes', 'image'],
+            'category' => ['sometimes', 'string'],
         ];
     }
 }

@@ -49,7 +49,7 @@ class AuthenticationController extends Controller
             return response()->json(['message' => 'The provided credentials are incorrect.'], Response::HTTP_BAD_REQUEST);
         }
 
-        $token = $user->createToken($request->device_name, ['*'], now()->addMinutes(121));
+        $token = $user->createToken($request->device_name, ['*'], now()->addDays(5));
         
         return response()->json([
             'message' => 'Login successful',
@@ -57,7 +57,7 @@ class AuthenticationController extends Controller
                 'token' => $token->plainTextToken,
                 'name' => $user->name,
                 'email' => $user->email,
-                'expiration_time (hrs)' => intval(now()->diffInHours($token->accessToken->expires_at)),
+                'expiration_time' => strtotime($token->accessToken->expires_at),
                 'user_type' => $user->profile_type,
             ]
             ], Response::HTTP_CREATED
@@ -91,7 +91,7 @@ class AuthenticationController extends Controller
     public function verify(VerificationRequest $request)
     {
         $validatedInput = $request->validated();
-        $verify = Verify::where(['token' => $validatedInput['token'], 'email' => $validatedInput['email']])->first();
+        $verify = Verify::where(['token' => $validatedInput['token']])->first();
 
         if (!$verify) {
             return response()->json(['message' => "Invalid token"], Response::HTTP_BAD_REQUEST);

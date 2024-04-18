@@ -20,6 +20,9 @@ class PostResource extends JsonResource
             'slug' => $this->slug,
             'body' => $this->body,
             'media' => $this->media,
+            'created_on' => $this->created_at,
+            'category' => $this->category,
+            'comments_count' => $this->comments()->count(),
             'creator' => new UserResource($this->creator),
         ];
     }

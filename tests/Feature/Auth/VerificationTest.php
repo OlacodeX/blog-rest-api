@@ -13,7 +13,6 @@ it('can verify account', function () {
         'email' =>  $user->email
     ])->create();
     $response = $this->postJson('/api/v1/verify', [
-        'email' => $verify->email,
         'token' => $verify->token
     ]);
 
