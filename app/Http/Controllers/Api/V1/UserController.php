@@ -59,7 +59,7 @@ class UserController extends Controller implements HasMiddleware
         
         $validatedInput = $request->validate([
             'name' => ['sometimes', 'string', 'max:255'],
-            'email' => ['sometimes', 'string', 'email', 'max:255', 'unique:users,'.$user],
+            'email' => ['sometimes', 'string', 'email', 'max:255', 'unique:users,email,'.$request->route('user')],
         ]);
 
         return DB::transaction(function () use($validatedInput, $user) {

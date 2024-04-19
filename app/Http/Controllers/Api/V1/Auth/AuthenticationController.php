@@ -67,6 +67,7 @@ class AuthenticationController extends Controller
         return response()->json([
             'message' => 'Login successful',
             'data' => [
+                'id' => $user->id,
                 'token' => $token->plainTextToken,
                 'name' => $user->name,
                 'email' => $user->email,
