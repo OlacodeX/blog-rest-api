@@ -13,6 +13,7 @@ use Illuminate\Http\Response;
 use Illuminate\Routing\Controllers\HasMiddleware;
 use Illuminate\Routing\Controllers\Middleware;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller implements HasMiddleware
 {
@@ -43,14 +44,9 @@ class PostController extends Controller implements HasMiddleware
     {
        $validatedInput = $request->validated();
        $validatedInput['user_id'] = Auth::user()->id;
-       $firebase_storage_path = config('services.firebase.environment').'/'.'blog/'; 
-       $originName = $validatedInput['media']->getClientOriginalName();
-       $fileName  = pathinfo($originName, PATHINFO_FILENAME);
-       $extension = $validatedInput['media']->getClientOriginalExtension(); 
-       $fileName = $fileName.'.'.$extension; 
-       $localPath = 'storage/images/blog';
-       $downloadUrl = Auth::user()->store($validatedInput['media'], $firebase_storage_path, $localPath, $fileName); 
-       $validatedInput['media'] = $downloadUrl;
+       $hashedName = $request->media->hashName();
+       $uploadedFile = $request->file('media')->storeAs('media',$hashedName, 's3');
+       $validatedInput['media'] = Storage::disk('s3')->url($uploadedFile);
        $post = Post::create($validatedInput);
 
        return new PostResource($post, Response::HTTP_CREATED);
@@ -80,15 +76,10 @@ class PostController extends Controller implements HasMiddleware
             return response()->json(['message' => 'Post not found'], Response::HTTP_NOT_FOUND);
         }
         $validatedInput = $request->validated();
-        if ($request->has('media')) {
-            $firebase_storage_path = config('services.firebase.environment').'/'.'blog/'; 
-            $originName = $validatedInput['media']->getClientOriginalName();
-            $fileName  = pathinfo($originName, PATHINFO_FILENAME);
-            $extension = $validatedInput['media']->getClientOriginalExtension(); 
-            $fileName = $fileName.'.'.$extension; 
-            $localPath = 'storage/images/blog';
-            $downloadUrl = Auth::user()->store($validatedInput['media'], $firebase_storage_path, $localPath, $fileName); 
-            $validatedInput['media'] = $downloadUrl;
+        if ($request->hasFile('media')) {
+            $hashedName = $request->media->hashName();
+            $uploadedFile = $request->file('media')->storeAs('media',$hashedName, 's3');
+            $validatedInput['media'] = Storage::disk('s3')->url($uploadedFile);
         }
         $old_post->update($validatedInput);
         $old_post->refresh();
