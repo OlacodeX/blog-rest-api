@@ -14,6 +14,7 @@ Route::post('/verify', [AuthenticationController::class, 'verify'])->name('verif
 Route::post('/resetpassword', [AuthenticationController::class, 'resetPassword'])->name('resetPassword');
 Route::post('/resendVerificationMail', [AuthenticationController::class, 'resendVerificationEmail'])->name('resendVerificationEmail');
 
-Route::apiResource('posts', PostController::class)->whereNumber(['post']);
+Route::apiResource('posts', PostController::class)->whereNumber(['post'])->except(['update']);
+Route::post('/posts/{post}', [PostController::class, 'update'])->name('posts.update')->whereNumber(['post']);
 Route::apiResource('users', UserController::class)->only(['index', 'update', 'destroy', 'show'])->whereNumber(['user']);
 Route::apiResource('posts.comments', CommentController::class)->whereNumber(['post', 'comment']);
