@@ -4,7 +4,7 @@
 This is a rest API for a blog with comment crud and user management built with Laravel 11.
 
 - The authentication is handled by Laravel sanctum.
-- File upload uses firebase storage
+- File upload uses amazon s3
 - There are feature tests for all auth endpoints written with Pest PHP.
 
 ## Run Locally
